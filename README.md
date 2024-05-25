@@ -17,6 +17,12 @@ Delete a Task: Prompts for a task ID and deletes the corresponding task.
 Display Task Information: Prompts for a task ID and displays the task's details.
 List Tasks for a Given Day: Prompts for a date and lists all tasks due on that date.
 Search for a Task by Title: Prompts for a title and searches for tasks containing that title.
+
+File Format
+Tasks are stored in a tasks.csv file with the following format:
+
+Requirements
+Bash
 Exit: Exits the script.
 
 File Format
