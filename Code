@@ -1,0 +1,83 @@
+#!/bin/bash
+
+create_task() {
+    echo "Creating a new task..."
+    read -p "Enter title: " title
+    read -p "Enter due date (YYYY-MM-DD): " due_date
+    read -p "Enter description: " description
+    read -p "Enter location: " location
+    read -p "Is task completed? (yes/no): " completion
+    if [[ "$completion" == "yes" ]]; then
+        completion=true
+    else
+        completion=false
+    fi
+    echo "$title,$due_date,$description,$location,$completion" >> tasks.csv
+}
+
+update_task() {
+    echo "Updating a task..."
+    read -p "Enter task id: " task_id
+    read -p "Enter new title: " title
+    read -p "Enter new due date (YYYY-MM-DD): " due_date
+    read -p "Enter new description: " description
+    read -p "Enter new location: " location
+    read -p "Is task completed? (yes/no): " completion
+    if [[ "$completion" == "yes" ]]; then
+        completion=true
+    else
+        completion=false
+    fi
+    sed -i "${task_id}s/[^,]*/$title/1" tasks.csv
+    sed -i "${task_id}s/[^,]*/$due_date/2" tasks.csv
+    sed -i "${task_id}s/[^,]*/$description/3" tasks.csv
+    sed -i "${task_id}s/[^,]*/$location/4" tasks.csv
+    sed -i "${task_id}s/[^,]*/$completion/5" tasks.csv
+}
+
+delete_task() {
+    echo "Deleting a task..."
+    read -p "Enter task id: " task_id
+    sed -i "${task_id}d" tasks.csv
+}
+
+display_task() {
+    echo "Displaying task information..."
+    read -p "Enter task id: " task_id
+    sed -n "${task_id}p" tasks.csv
+}
+
+list_tasks() {
+    echo "Listing tasks for a given day..."
+    read -p "Enter date (YYYY-MM-DD): " date
+    grep "$date" tasks.csv
+}
+
+search_task() {
+    echo "Searching for a task by title..."
+    read -p "Enter title to search: " title
+    grep "$title" tasks.csv
+}
+
+while true; do
+    echo "Todo Menu:"
+    echo "1. Create a task"
+    echo "2. Update a task"
+    echo "3. Delete a task"
+    echo "4. Display task information"
+    echo "5. List tasks for a given day"
+    echo "6. Search for a task by title"
+    echo "7. Exit"
+    read -p "Enter your choice: " choice
+
+    case $choice in
+        1) create_task ;;
+        2) update_task ;;
+        3) delete_task ;;
+        4) display_task ;;
+        5) list_tasks ;;
+        6) search_task ;;
+        7) echo "Exiting..."; break ;;
+        *) echo "Invalid choice. Please enter a number between 1 and 7." ;;
+    esac
+done
